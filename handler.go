@@ -60,7 +60,15 @@ func converter(c *fiber.Ctx) error {
 }
 
 func resizer(c *fiber.Ctx) error {
-	widthValue, heightValue := c.FormValue("width", "0"), c.FormValue("height", "0")
+	widthValue, heightValue := c.FormValue("width"), c.FormValue("height")
+
+	if widthValue == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "`width` field is missing!")
+	}
+
+	if heightValue == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "`height` field is missing!")
+	}
 
 	width, err := strconv.Atoi(widthValue)
 	if err != nil {
@@ -72,8 +80,8 @@ func resizer(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Please provide only an integer number for `height`!")
 	}
 
-	if width <= 0 && height <= 0 {
-		return fiber.NewError(fiber.StatusBadRequest, "You must specify the dimensions using the `width` and `height` fields!")
+	if width <= 0 || height <= 0 {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid dimension values for `width` or/and `height` fields!")
 	}
 
 	file, err := c.FormFile("image")
