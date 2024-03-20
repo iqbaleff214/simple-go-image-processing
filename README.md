@@ -92,3 +92,16 @@ The response will be returned as JSON in case of an error. For example:
 }
 ```
 
+## Test
+
+Execute the following command to run the tests:
+```shell
+go test -v .
+```
+
+To run the tests with code coverage, execute the following command:
+```shell
+go test -v -cover .
+```
+
+The test coverage is at **84.2%**.
